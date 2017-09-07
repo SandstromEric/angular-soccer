@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes } from '@angular/router';
 import { environment } from '../environments/environment';
-import { AppComponent } from './app.component';
+
 
 import { AngularFireModule } from 'angularfire2';
 
 // New imports to update based on AngularFire2 version 4
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { LoginComponent } from './login/login.component';
+
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCwhEoejP6TabjaYOOOp512BeHxF76tV0I",
@@ -23,14 +23,17 @@ export const firebaseConfig = {
 };
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MdButtonModule, MdCheckboxModule} from '@angular/material';
+import {MdButtonModule, MdCheckboxModule, MdMenuModule} from '@angular/material';
 
-
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,8 @@ import {MdButtonModule, MdCheckboxModule} from '@angular/material';
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MdButtonModule, 
-    MdCheckboxModule
+    MdCheckboxModule,
+    MdMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

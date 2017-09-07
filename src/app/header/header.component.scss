@@ -1,0 +1,21 @@
+header {
+    position: fixed;
+    display: flex;
+    background: #00BFA5;
+    left: 0;
+    right: 0;
+    top: 0;
+    .header-container {
+        display: flex;
+        flex: 1;
+        padding: 0 10px;
+
+        .menu {
+            flex: 1;
+        }
+
+        .user-auth {
+            
+        }
+    }
+}
