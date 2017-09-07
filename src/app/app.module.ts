@@ -21,6 +21,11 @@ export const firebaseConfig = {
   messagingSenderId: "1079019454546"
 };
 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MdButtonModule, MdCheckboxModule} from '@angular/material';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +37,10 @@ export const firebaseConfig = {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule,
+    MdButtonModule, 
+    MdCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
