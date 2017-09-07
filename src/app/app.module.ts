@@ -2,9 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-<<<<<<< HEAD
 import { Routes } from '@angular/router';
-=======
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
@@ -23,7 +21,6 @@ export const firebaseConfig = {
   storageBucket: "angular-soccer.appspot.com",
   messagingSenderId: "1079019454546"
 };
->>>>>>> 82ed474b659bcfac4571cc0649715a2e363de383
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButtonModule, MdCheckboxModule} from '@angular/material';
