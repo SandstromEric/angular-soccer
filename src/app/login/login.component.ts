@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
-import * as firebase from 'firebase/app';
+import { AuthService } from '../core/auth.service';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -11,39 +9,86 @@ import * as firebase from 'firebase/app';
 })
 export class LoginComponent implements OnInit {
 
-  user: Observable<firebase.User>;
-  items: FirebaseListObservable<any[]>;
-  msgVal: string = '';
+  userForm: FormGroup;
+  newUser = true; // to toggle login or signup form
+  passReset = false; // set to true when password reset is triggered
+  formErrors = {
+    'email': '',
+    'password': ''
+  };
+  validationMessages = {
+    'email': {
+      'required': 'Email is required.',
+      'email': 'Email must be a valid email'
+    },
+    'password': {
+      'required': 'Password is required.',
+      'pattern': 'Password must be include at one letter and one number.',
+      'minlength': 'Password must be at least 4 characters long.',
+      'maxlength': 'Password cannot be more than 40 characters long.',
+    }
+  };
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
-    this.items = af.list('/messages', {
-      query: {
-        limitToLast: 50
-      }
+  constructor(private fb: FormBuilder, private auth: AuthService) { }
+
+  ngOnInit(): void {
+    this.buildForm();
+  }
+
+  toggleForm() {
+    this.newUser = !this.newUser;
+  }
+
+  signup(): void {
+    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'])
+  }
+
+  login(): void {
+    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
+  }
+
+  resetPassword() {
+    this.auth.resetPassword(this.userForm.value['email'])
+      .then(() => this.passReset = true)
+  }
+
+  buildForm(): void {
+    this.userForm = this.fb.group({
+      'email': ['', [
+        Validators.required,
+        Validators.email
+      ]
+      ],
+      'password': ['', [
+        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.minLength(6),
+        Validators.maxLength(25)
+      ]
+      ],
     });
 
-    this.user = this.afAuth.authState;
-
+    this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.onValueChanged(); // reset validation messages
   }
 
-  login() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  // Updates validation state on form changes.
+  onValueChanged(data?: any) {
+    if (!this.userForm) { return; }
+    const form = this.userForm;
+    for (const field in this.formErrors) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field)) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          for (const key in control.errors) {
+            if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+              this.formErrors[field] += messages[key] + ' ';
+            }
+          }
+        }
+      }
+    }
   }
-  
-  signUp() {
-    
-  }
-
-  logout() {
-    this.afAuth.auth.signOut();
-  }
-
-  Send(desc: string) {
-    this.items.push({ message: desc });
-    this.msgVal = '';
-  }
-
-  ngOnInit() {
-  }
-
 }

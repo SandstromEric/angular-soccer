@@ -5,8 +5,10 @@ import { HttpModule } from '@angular/http';
 import { Routes } from '@angular/router';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
+import { CoreModule } from './core/core.module';
+import { AppRoutingModule } from './app-routing.module';
 
 // New imports to update based on AngularFire2 version 4
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -38,12 +40,17 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     BrowserModule,
     FormsModule,
     HttpModule,
+    AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MdButtonModule, 
-    MdCheckboxModule
+    MdCheckboxModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
